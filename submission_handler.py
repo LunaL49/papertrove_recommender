@@ -30,10 +30,8 @@ def calc_pref_vec(text):
   last = results.last_hidden_state[:, 0, :]
   embeds = tf.nn.l2_normalize(last, axis=1) # this is the raw EagerTensor output
   embeds = tf.keras.backend.get_value(embeds)
-
-  avg_embed = np.mean(embeds, axis=0)
-  pref_vec = avg_embed / np.linalg.norm(avg_embed)
-
+  pref_vec = np.mean(embeds, axis=0)
+  
   return(pref_vec)
 
 for i in range(0,len(new_submissions)):
