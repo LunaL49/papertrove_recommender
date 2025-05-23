@@ -41,5 +41,5 @@ for i in range(0, len(users)):
       if response.data:
         print("added one paper to recommendations")
 
-  supabase.table("latest_papers").delete().neq('id', '').execute()
+  supabase.table("latest_papers").delete().neq('id', '00000000-0000-0000-0000-000000000000').execute() # delete all rows in the latest_papers database
   
