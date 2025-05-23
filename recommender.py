@@ -41,5 +41,5 @@ for i in range(0, len(users)):
       if response.data:
         print("added one paper to recommendations")
 
-  supabase.table("latest_papers").delete().execute()
+  supabase.table("latest_papers").delete().match({}).execute()
   
