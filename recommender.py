@@ -24,22 +24,23 @@ for i in range(0, len(users)):
     doi_vec = np.asarray(ast.literal_eval(doi_vec), dtype=np.float32)
     similarities.append(np.dot(user_pref_vec, doi_vec))
 
-  rank = np.flip(np.argsort(similarities), axis=0) # sort the index, highest similarity first
-  best_fit = rank[:users[i]["digest_length"]] # take the top x items
+    rank = np.flip(np.argsort(similarities), axis=0) # sort the index, highest similarity first
+    best_fit = rank[:users[i]["digest_length"]] # take the top x items
+
   for n in range(0,len(best_fit)):
-    if similarities[n]>0.7:
+    index = best_fit[n]
+    if similarities[index]>0.7:
       data = {
         "user_email": users[i]["email"],
-        "doi": papers[n]["doi"],
-        "title": papers[n]["title"],
-        "abstract": papers[n]["abstract"],
-        "author": papers[n]["author"],
-        "link": papers[n]["link"],
-        "score": float(similarities[n])
+        "doi": papers[index]["doi"],
+        "title": papers[index]["title"],
+        "abstract": papers[index]["abstract"],
+        "author": papers[index]["author"],
+        "link": papers[index]["link"],
+        "score": float(similarities[index])
       }
       response = supabase.table("recommendations").insert(data).execute()
       if response.data:
         print("added one paper to recommendations")
 
   supabase.table("latest_papers").delete().neq('id', '00000000-0000-0000-0000-000000000000').execute() # delete all rows in the latest_papers database
-  
