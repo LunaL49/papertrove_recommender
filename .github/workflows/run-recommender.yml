@@ -2,7 +2,7 @@ name: Run recommender
 
 on:
   schedule:
-    - cron: "0 8 * * *" # Runs daily at 6AM UTC
+    - cron: "0 8 * * *" # Runs daily at 8AM UTC
   workflow_dispatch: # Enables manual trigger
 
 jobs:

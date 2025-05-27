@@ -27,20 +27,21 @@ for i in range(0, len(users)):
     rank = np.flip(np.argsort(similarities), axis=0) # sort the index, highest similarity first
     best_fit = rank[:users[i]["digest_length"]] # take the top x items
 
-  for n in range(0,len(best_fit)):
-    index = best_fit[n]
-    if similarities[index]>0.7:
-      data = {
-        "user_email": users[i]["email"],
-        "doi": papers[index]["doi"],
-        "title": papers[index]["title"],
-        "abstract": papers[index]["abstract"],
-        "author": papers[index]["author"],
-        "link": papers[index]["link"],
-        "score": float(similarities[index])
-      }
-      response = supabase.table("recommendations").insert(data).execute()
-      if response.data:
-        print("added one paper to recommendations")
+  if len(papers) > 0: # only do this part if there are actually new papers
+    for n in range(0,len(best_fit)):
+      index = best_fit[n]
+      if similarities[index]>0.7:
+        data = {
+          "user_email": users[i]["email"],
+          "doi": papers[index]["doi"],
+          "title": papers[index]["title"],
+          "abstract": papers[index]["abstract"],
+          "author": papers[index]["author"],
+          "link": papers[index]["link"],
+          "score": float(similarities[index])
+        }
+        response = supabase.table("recommendations").insert(data).execute()
+        if response.data:
+          print("added one paper to recommendations")
 
-  supabase.table("latest_papers").delete().neq('id', '00000000-0000-0000-0000-000000000000').execute() # delete all rows in the latest_papers database
+supabase.table("latest_papers").delete().neq('id', '00000000-0000-0000-0000-000000000000').execute() # delete all rows in the latest_papers database
